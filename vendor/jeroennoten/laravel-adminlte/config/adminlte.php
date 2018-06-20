@@ -132,7 +132,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Permissions',
-                    'url'  => '#',
+                    'url'  => 'permission',
                 ],
                 [
                     'text' => 'Roles',

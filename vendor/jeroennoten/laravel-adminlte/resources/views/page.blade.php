@@ -1,5 +1,16 @@
 @extends('adminlte::master')
 
+@push('css')
+<style type="text/css"> 
+    table.dataTable thead th {
+        border-bottom: 0;
+    }
+    table.dataTable.no-footer {
+        border-bottom: 0;
+    }
+</style>
+@endpush
+
 @section('adminlte_css')
     <link rel="stylesheet"
           href="{{ asset('vendor/adminlte/dist/css/skins/skin-' . config('adminlte.skin', 'blue') . '.min.css')}} ">
@@ -137,6 +148,9 @@
 
 @push('js')
 <script type="text/javascript">
+
+$('div.alert').not('.alert-important').delay(3000).fadeOut(350);
+
 function confirmLogout(){
     if(confirm("Anda yakin akan logout?")){
         // return true;
@@ -145,6 +159,27 @@ function confirmLogout(){
         return false;
     }
 }  
+
+@if(Session::has('message'))
+    var type = "{{ Session::get('alert-type', 'info') }}";
+    switch(type){
+        case 'info':
+            toastr.info("{{ Session::get('message') }}");
+            break;
+        
+        case 'warning':
+            toastr.warning("{{ Session::get('message') }}");
+            break;
+
+        case 'success':
+            toastr.success("{{ Session::get('message') }}");
+            break;
+
+        case 'error':
+            toastr.error("{{ Session::get('message') }}");
+            break;
+    }
+@endif
 </script>
 @endpush
 

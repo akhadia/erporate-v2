@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//=== Permission ===//
+Route::get('permission/loaddata','PermissionController@loadData');
+Route::post('permission/delete','PermissionController@delete');
+Route::resource('permission','PermissionController');
