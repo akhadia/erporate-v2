@@ -136,7 +136,7 @@ return [
                 ],
                 [
                     'text' => 'Roles',
-                    'url'  => '#',
+                    'url'  => 'role',
                 ],
                 [
                     'text' => 'User',

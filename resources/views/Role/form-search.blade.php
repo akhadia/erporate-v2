@@ -1,7 +1,7 @@
 <div class="row">
    <div class="form-group col-md-3">
         {{-- <input class="form-control" id="no_pemesanan" name="no_pemesanan" placeholder="Enter text.."> --}}
-        {{ Form::text('nama_permission', '', array('id' => 'nama_permission', 'class' => 'form-control', 'placeholder' => 'Nama permission...')) }}
+        {{ Form::text('nama_role', '', array('id' => 'nama_role', 'class' => 'form-control', 'placeholder' => 'Nama role...')) }}
     </div> 
 </div>
 
@@ -20,8 +20,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-offset-0 col-md-12">
-            <button class="btn btn-success" onclick="" id="filter-permission-table"><i class="fa fa-search"></i> Search</button>
-            <button class="btn btn-warning" type="reset" id="reset-filter-permission-table" >Reset</button>
+            <button class="btn btn-success" onclick="" id="filter-role-table"><i class="fa fa-search"></i> Search</button>
+            <button class="btn btn-warning" type="reset" id="reset-filter-role-table" >Reset</button>
         </div>
     </div>
 </div>

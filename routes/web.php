@@ -23,3 +23,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('permission/loaddata','PermissionController@loadData');
 Route::post('permission/delete','PermissionController@delete');
 Route::resource('permission','PermissionController');
+
+//=== Role ===//
+Route::get('role/loaddata','RoleController@loadData');
+Route::post('role/delete','RoleController@delete');
+Route::resource('role','RoleController');
