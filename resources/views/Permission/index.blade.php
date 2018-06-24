@@ -14,7 +14,7 @@
 
 @section('content')
 
-@include('flash::message')
+{{-- @include('flash::message') --}}
 <a href="{{ URL::to('permission/create') }}" class="btn btn-primary btn-lg" permission="button"><i class="fa fa-plus-circle"></i> Add New Permission</a>
 <div class="row">&nbsp;</div>
 

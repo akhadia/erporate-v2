@@ -129,18 +129,19 @@ return [
         [
             'text'    => 'User Management',
             'icon'    => 'user',
+            'role'    => 'superadministrator',
             'submenu' => [
                 [
-                    'text' => 'Permissions',
+                    'text' => 'Permission',
                     'url'  => 'permission',
                 ],
                 [
-                    'text' => 'Roles',
+                    'text' => 'Role',
                     'url'  => 'role',
                 ],
                 [
                     'text' => 'User',
-                    'url'  => '#',
+                    'url'  => 'user',
                 ]
             ],
         ],
@@ -226,6 +227,7 @@ return [
         JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+        App\Filter\MenuFilter::class,
     ],
 
     /*

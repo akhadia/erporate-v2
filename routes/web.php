@@ -28,3 +28,10 @@ Route::resource('permission','PermissionController');
 Route::get('role/loaddata','RoleController@loadData');
 Route::post('role/delete','RoleController@delete');
 Route::resource('role','RoleController');
+
+//=== User ===//
+Route::get('user/loaddata','UserController@loadData');
+Route::post('user/delete','UserController@delete');
+Route::post('user/cekusername','UserController@cekUsername');
+Route::post('user/cekemail','UserController@cekEmail');
+Route::resource('user','UserController');
