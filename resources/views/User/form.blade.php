@@ -36,6 +36,7 @@
                     <label for="username" class="col-sm-4 control-label">Username</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="username" name="username" value="{{(isset($user->id))?$user->username:''}}" autocomplete="off" placeholder="">
+                        <input type="hidden" id="username_state" name="username_state" value="">
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -128,8 +129,8 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var error=0;
-    var username_state = false;
-    var email_state = false;
+    var username_state;
+    var email_state;
 
     //remove style span & text
     $('#username').on('keyup', function(){
@@ -155,10 +156,11 @@ $(document).ready(function() {
     $('#username').on('blur', function(){
         var username = $('#username').val().replace(/\s+/g, '').length;
         if(username >= 5){
-            username_state = cekUsername();
+            cekUsername();
+            username_state = $('#username_state').val();
         }
 
-        if(username_state == false){
+        if(username_state == 'taken'){
             error++;
         }
     });
@@ -179,7 +181,6 @@ $(document).ready(function() {
 
     //validasi error
     $('#btn_submit').on('click', function(){
-
         if(error > 0){
             return false;
         }else{
@@ -231,11 +232,11 @@ $("#changePwd" ).click(function ()
 });
 
 function cekUsername(){
-
     var username = $('#username').val();
     var url = "{{url('user/cekusername')}}";
 
     $.ajax({
+        async:false,
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
@@ -245,29 +246,29 @@ function cekUsername(){
             username : username,
         },
         success: function (response) {
-            var username_state = false;
-
             if (response == 'taken' ) {
                 $('#username').parent().parent().addClass("has-warning");
                 $('#username').siblings("span").text('Sorry... Username already taken');
-
+                $('#username_state').val(response);
+                
             }else if (response == 'not_taken') {
-                username_state = true;
                 $('#username').parent().parent().removeClass("has-warning");
                 $('#username').parent().parent().addClass("has-success");
                 $('#username').siblings("span").text('Username available');
+                $('#username_state').val(response);
         
             }
-
-            return username_state;
         },
         error: function (xhr, err) {
             // console.log("readyState: " + xhr.readyState + "\nstatus: " + xhr.status);
             // console.log("responseText: " + xhr.responseText);
         }
     });
-    
+
+    // return username_state;
+
 }
+
 
 
 function validateEmail(sEmail){

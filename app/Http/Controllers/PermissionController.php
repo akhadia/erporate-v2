@@ -13,6 +13,11 @@ use Yajra\Datatables\Datatables;
 
 class PermissionController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('permission:read-acl|create-acl|update-acl|delete-acl');
+    }
+
     /**
      * Display a listing of the resource.
      *
