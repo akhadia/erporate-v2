@@ -10,6 +10,12 @@ Route::group(['middleware' => 'web', 'prefix' => 'master', 'namespace' => 'Modul
     Route::post('kategori/delete','KategoriController@delete');
     Route::resource('kategori','KategoriController');
 
+    //== Produk ==//
+    Route::get('produk/loaddata','ProdukController@loadData');
+    Route::get('produk/edit','ProdukController@edit');
+    Route::post('produk/delete','ProdukController@delete');
+    Route::resource('produk','ProdukController');
+
 
 
 

@@ -7,6 +7,7 @@ return [
             'acl' => 'c,r,u,d',
             // 'profile' => 'r,u',
             'kategori' => 'c,r,u,d',
+            'produk' => 'c,r,u,d',
 
         ],
         'administrator' => [

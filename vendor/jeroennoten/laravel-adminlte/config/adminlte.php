@@ -133,6 +133,12 @@ return [
             'permission'  => 'read-kategori',
         ],
         [
+            'text'        => 'Produk',
+            'url'         => 'master/produk',
+            'icon'        => 'file',
+            'permission'  => 'read-produk',
+        ],
+        [
             'text'    => 'User Management',
             'icon'    => 'user',
             'role'    => 'superadministrator',

@@ -1,3 +1,4 @@
+
 {{-- <div class="modal fade in" id="modal-default" style="display: block; padding-right: 15px;"> --}}
     <div class="modal-dialog">
       <div class="modal-content">

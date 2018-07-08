@@ -29,6 +29,15 @@
 @push('modal-js')
 <script type="text/javascript">
 
+$('#kategori-form').validate({ // initialize the plugin
+    rules: {
+        nama_kategori: {
+            required: true,
+            minlength: 2
+        },
+    }
+});
+
 $('#modal-btn-submit').click(function(){
     // var nama_kategori = $('#nama_kategori').val();
     
