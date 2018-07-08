@@ -127,6 +127,12 @@ return [
             'icon'        => 'file',
         ],
         [
+            'text'        => 'Kategori',
+            'url'         => 'master/kategori',
+            'icon'        => 'file',
+            'permission'  => 'read-kategori',
+        ],
+        [
             'text'    => 'User Management',
             'icon'    => 'user',
             'role'    => 'superadministrator',

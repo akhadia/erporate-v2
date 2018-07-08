@@ -13,6 +13,9 @@ class MenuFilter implements FilterInterface
         if (isset($item['role']) && ! Auth::user()->hasRole($item['role'])) {
             return false;
         }
+        elseif (isset($item['permission']) && ! Auth::user()->can($item['permission'])) {
+            return false;
+        }
 
         return $item;
     }

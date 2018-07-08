@@ -130,7 +130,8 @@
 
             <!-- Main content -->
             <section class="content">
-
+                <div class="modal fade in" id="myModalDialog" >                    
+                </div>
                 @yield('content')
 
             </section>
