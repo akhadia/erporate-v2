@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Redirect;
 
 use Laratrust;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+use File;
 
 class ProdukController extends Controller
 {
@@ -61,10 +63,12 @@ class ProdukController extends Controller
 
         if(isset($all_data['image_prod'])){
             $file       = $request->file('image_prod');
-            $file_name   = $file->getClientOriginalName();
-            $request->file('image_prod')->move("image/", $file_name);
+            // $file_name   = $file->getClientOriginalName();
+            $new_file_name = $this->noUrutGambar();
 
-            $data_produk['image'] =  $file_name;
+            $request->file('image_prod')->move("images/", $new_file_name);
+
+            $data_produk['image'] =  $new_file_name;
         }
 
         $act=Produk::create($data_produk);
@@ -126,10 +130,11 @@ class ProdukController extends Controller
 
         if(isset($all_data['image_prod'])){
             $file       = $request->file('image_prod');
-            $file_name   = $file->getClientOriginalName();
-            $request->file('image_prod')->move("image/", $file_name);
+            // $file_name   = $file->getClientOriginalName();
+            $new_file_name = $this->noUrutGambar();
+            $request->file('image_prod')->move("images/", $new_file_name);
 
-            $data_produk['image'] =  $file_name;
+            $data_produk['image'] =  $new_file_name;
         }
 
         // dd($data_produk);
@@ -166,9 +171,14 @@ class ProdukController extends Controller
         $id_produk = \Request::input('id_produk');
 
         $produk = Produk::findOrFail($id_produk);
+        $img_produk = $produk->image;
+        $destinationPath = 'images/'.$img_produk;
 
         DB::beginTransaction();
         try {
+            if(isset($img_produk) && !empty($img_produk)){
+                File::delete($destinationPath);
+            }
             $act= $produk->forceDelete();
         }catch (Exception $e) {
             DB::rollBack();
@@ -196,6 +206,22 @@ class ProdukController extends Controller
             ->addColumn('nomor',function($dataList){
                 return $GLOBALS['nomor']++;
             })  
+
+            ->addColumn('gambar',function($dataList){
+                if(!empty($dataList->image) && $dataList->image != null){
+                    return url("/images/{$dataList->image}");
+                }else{
+                  return null;
+                }
+            })
+
+            ->addColumn('kategori',function($dataList){
+                if(isset($dataList->kategori->nama)){
+                  return $dataList->kategori->nama;
+                }else{
+                  return null;
+                }
+            })
           
             ->addColumn('action', function ($dataList) {
                 $content = '';
@@ -219,4 +245,39 @@ class ProdukController extends Controller
             ->make(true);
             
     }
+
+     //Fungsi untuk auto generate nomor gambar
+     private function noUrutGambar(){
+        $temp = Carbon::createFromFormat('Y-m-d', date("Y-m-d"));
+        $tgl_no_urut = $temp->format('dmY');
+
+        $initial_no_seri = 'IMG';
+
+        $base_no_seri = strtoupper($initial_no_seri);
+        $base_no_seri = $base_no_seri.$tgl_no_urut."-";
+
+        $last_no_data = Produk::where(DB::raw('upper(image)'), 'LIKE', "%$base_no_seri%")->orderBy('id', 'desc')->first();
+    
+        if(!empty($last_no_data->image)){
+            $last_no = $last_no_data->image;
+            $int_last_no = substr($last_no, -3);
+            $max_lengnth_no = strlen($int_last_no);
+            //dd($int_last_no);
+            $int_last_no++;
+            $next_no = $int_last_no;
+            $diff_lengnth_no = $max_lengnth_no - strlen($next_no);
+            $char_tambahan = '';
+            for ($x = 1; $x <= $diff_lengnth_no; $x++) {
+                $char_tambahan .='0';
+            }
+            $next_no =  $char_tambahan.$next_no;
+            $next_no_seri = $base_no_seri.$next_no;
+            
+        }else{
+            $next_no_seri = $base_no_seri.'001';
+        }
+  
+        return $next_no_seri;
+    }
+
 }

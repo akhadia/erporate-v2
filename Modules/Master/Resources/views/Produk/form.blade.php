@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputDeskripsi" class="col-sm-2 control-label">Image</label>
+                    <label for="inputDeskripsi" class="col-sm-2 control-label">Gambar</label>
                     <div class="col-sm-10">
                         <div class="input-group">
                             <label class="input-group-btn">

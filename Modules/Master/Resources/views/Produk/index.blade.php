@@ -29,6 +29,7 @@
 
 <div class="row">
     <div class="box">
+        {{-- <img src="{{ URL::to('/') }}/images/Screenshot from 2018-06-20 19-51-00.png">' --}}
         {{-- <div class="box-header with-border">
             <h3 class="box-title">Bordered Table</h3>
         </div> --}}
@@ -38,7 +39,10 @@
             <thead>
                 <tr>
                     <th width="10%">No</th>
+                    <th>Gambar</th>
+                    <th>Kategori</th>
                     <th>Produk</th>
+                    <th>Harga</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -67,7 +71,20 @@ $(function() {
         },
         columns: [
             {data: 'nomor', name: 'nomor'},
+            {
+                data: "gambar",
+                orderable: false,
+                render: function(data, type, row) {
+                    if(data!=null && data!=''){
+                        return "<img src="+data+" style='height:75px;width:75px;'/>";
+                    }else{
+                        return null;
+                    }
+                }
+            },
+            {data: 'kategori', name: 'kategori', orderable: false},
             {data: 'nama', name: 'nama', orderable: false},
+            {data: 'harga', name: 'harga'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         bFilter : false,
