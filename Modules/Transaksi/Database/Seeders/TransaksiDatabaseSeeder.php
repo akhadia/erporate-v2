@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Master\Database\Seeders;
+namespace Modules\Transaksi\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class MasterDatabaseSeeder extends Seeder
+class TransaksiDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,8 +17,5 @@ class MasterDatabaseSeeder extends Seeder
         Model::unguard();
 
         // $this->call("OthersTableSeeder");
-        $this->call(KategoriTableSeeder::class);
-        $this->call(MejaTableSeeder::class);
-
     }
 }

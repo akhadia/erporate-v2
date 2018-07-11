@@ -16,6 +16,12 @@ Route::group(['middleware' => 'web', 'prefix' => 'master', 'namespace' => 'Modul
     Route::post('produk/delete','ProdukController@delete');
     Route::resource('produk','ProdukController');
 
+    //== Meja ==//
+    Route::get('meja/loaddata','MejaController@loadData');
+    Route::get('meja/edit','MejaController@edit');
+    Route::post('meja/delete','MejaController@delete');
+    Route::resource('meja','MejaController');
+
 
 
 

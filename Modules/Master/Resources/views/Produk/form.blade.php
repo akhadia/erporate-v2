@@ -46,6 +46,29 @@
                         <textarea class="form-control" rows="3" id="deskripsi_prod" name="deskripsi_prod" placeholder="Deskripsi">{{(isset($produk->id))?$produk->deskripsi:''}}</textarea>  
                     </div>
                 </div>
+                <?php
+                    $display_none = "display:none";
+                    if($produk->id && !empty($produk)){
+                        $display_none = "";
+                    }
+                ?>
+                <div class="form-group" style="{{$display_none}}">
+                    <label for="inputStatus" class="col-sm-2 control-label">Status</label>
+                    <div class="col-sm-10">
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="status" id="status" value="Y" {{($produk->status == 'Y') ? "checked" : '' }}>
+                        Ready
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input type="radio" name="status" id="status" value="N" {{($produk->status == 'N') ? "checked" : '' }}>
+                        Unready
+                        </label>
+                    </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="inputDeskripsi" class="col-sm-2 control-label">Gambar</label>
                     <div class="col-sm-10">

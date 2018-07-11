@@ -124,19 +124,44 @@ return [
         [
             'text'        => 'Dashboard',
             'url'         => 'home',
-            'icon'        => 'file',
+            'icon'        => 'tachometer',
         ],
+        // [
+        //     'text'        => 'Meja',
+        //     'url'         => 'master/meja',
+        //     'icon'        => 'file',
+        //     'permission'  => 'read-meja',
+        // ],
+        // [
+        //     'text'        => 'Kategori',
+        //     'url'         => 'master/kategori',
+        //     'icon'        => 'file',
+        //     'permission'  => 'read-kategori',
+        // ],
+        // [
+        //     'text'        => 'Produk',
+        //     'url'         => 'master/produk',
+        //     'icon'        => 'file',
+        //     'permission'  => 'read-produk',
+        // ],
         [
-            'text'        => 'Kategori',
-            'url'         => 'master/kategori',
-            'icon'        => 'file',
-            'permission'  => 'read-kategori',
-        ],
-        [
-            'text'        => 'Produk',
-            'url'         => 'master/produk',
-            'icon'        => 'file',
-            'permission'  => 'read-produk',
+            'text'    => 'Master',
+            'icon'    => 'table',
+            'role'    => 'superadministrator',
+            'submenu' => [
+                [
+                    'text'        => 'Kategori',
+                    'url'         => 'master/kategori',
+                ],
+                [
+                    'text'        => 'Produk',
+                    'url'         => 'master/produk',
+                ],
+                [
+                    'text'        => 'Meja',
+                    'url'         => 'master/meja',
+                ]
+            ],
         ],
         [
             'text'    => 'User Management',

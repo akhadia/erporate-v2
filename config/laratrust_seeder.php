@@ -5,23 +5,32 @@ return [
         'superadministrator' => [
             'users' => 'c,r,u,d',
             'acl' => 'c,r,u,d',
-            // 'profile' => 'r,u',
             'kategori' => 'c,r,u,d',
             'produk' => 'c,r,u,d',
+            'meja' => 'c,r,u,d',
+            'pesanan' => 'c,r,u,d',
+            'pembayaran' => 'c,r,u,d',
 
         ],
-        'administrator' => [
-            'users' => 'c,r,u,d',
-            // 'profile' => 'r,u'
+        'kasir' => [
+            'pesanan' => 'r,u',
+            'pembayaran' => 'r,u',
         ],
-        'user' => [
-            // 'profile' => 'r,u'
+        'pelayan' => [
+            'pesanan' => 'c,r,u,d',
         ],
+        // 'administrator' => [
+        //     'users' => 'c,r,u,d',
+        //     // 'profile' => 'r,u'
+        // ],
+        // 'user' => [
+        //     // 'profile' => 'r,u'
+        // ],
     ],
     'permission_structure' => [
-        'cru_user' => [
-            // 'profile' => 'c,r,u'
-        ],
+        // 'cru_user' => [
+        //     'profile' => 'c,r,u'
+        // ],
     ],
     'permissions_map' => [
         'c' => 'create',

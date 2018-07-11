@@ -20,7 +20,7 @@ class CreateProdukTable extends Migration
             $table->integer('harga')->nullable();
             $table->string('deskripsi')->nullable();
             $table->string('image')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
             $table->foreign('id_kategori','produk_fk_kategori')->references('id')->on('kategori');
 
         });

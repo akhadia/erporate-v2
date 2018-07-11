@@ -126,6 +126,7 @@ class ProdukController extends Controller
             'nama'          => $all_data['nama_prod'],
             'harga'         => $all_data['harga_prod'],
             'deskripsi'     => $all_data['deskripsi_prod'],
+            'status'        => $all_data['status'],
         );
 
         if(isset($all_data['image_prod'])){
@@ -190,14 +191,20 @@ class ProdukController extends Controller
 
     public function loadData(){
         $nama_produk = \Request::input('nama_produk');
+        $status = \Request::input('status');
 
         $GLOBALS['nomor']=\Request::input('start',1)+1;
 
-        $dataList = Produk::where(function ($q) use ($nama_produk){
+        $dataList = Produk::where(function ($q) use ($nama_produk, $status){
                 if(!empty($nama_produk)){
                     $nama_produk = strtoupper($nama_produk );
                     $q->where(DB::raw('upper(nama)'), 'LIKE', "%$nama_produk%");
                 } 
+                if(!empty($status) && $status!='All'){
+                    $status = strtoupper($status );
+                    $q->where(DB::raw('upper(status)'), '=', $status);
+                } 
+
             })
             ->orderby('id','desc')
             ->get();
@@ -222,6 +229,16 @@ class ProdukController extends Controller
                   return null;
                 }
             })
+
+            ->addColumn('status', function ($dataList) {
+                $content = '';
+                if($dataList->status == 'Y'){
+                     $content .= '<span class="label label-success">Ready</span>';
+                }else{
+                    $content .= '<span class="label label-warning">Unready</span>';
+                }
+                return $content;
+            })   
           
             ->addColumn('action', function ($dataList) {
                 $content = '';
@@ -232,11 +249,7 @@ class ProdukController extends Controller
                 if (Laratrust::can('delete-produk')) {
                     $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-produk" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
                 }
-                
-                
-
                 // $content .= '<a href="'.url("role/destroy/".$dataList->id).'" class="btn btn-xs btn-danger hapus-bahan" target=""><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-
                
                 return $content;
             })

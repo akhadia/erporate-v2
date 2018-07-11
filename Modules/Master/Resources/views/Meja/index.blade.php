@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Produk')
+@section('title', 'Meja')
 
 @section('content_header')
-    <h1>Produk</h1>
+    <h1>Meja</h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         {{-- <li class="">User Management</li> --}}
-        <li class="active">Produk</li>
+        <li class="active">Meja</li>
     </ol>
 @stop
  
@@ -15,35 +15,30 @@
 @section('content')
 
 {{-- @include('flash::message') --}}
-@permission('create-produk')
+@permission('create-meja')
 <button type="button" class="btn btn-primary btn-lg open-modal">
-    <i class="fa fa-plus-circle"></i> Add New Produk
+    <i class="fa fa-plus-circle"></i> Add New Meja
 </button>
 @endpermission
-{{-- <a href="{{ URL::to('master/produk/create') }}" class="btn btn-primary btn-lg" produk="button" data-toggle="modal" data-target="#myModelDialog"><i class="fa fa-plus-circle"></i> Add New Produk</a> --}}
+{{-- <a href="{{ URL::to('master/meja/create') }}" class="btn btn-primary btn-lg" meja="button" data-toggle="modal" data-target="#myModelDialog"><i class="fa fa-plus-circle"></i> Add New Meja</a> --}}
 
 
 <div class="row">&nbsp;</div>
 
-@include('master::Produk.form-search')  
+@include('master::Meja.form-search')  
 
 <div class="row">
     <div class="box">
-        {{-- <img src="{{ URL::to('/') }}/images/Screenshot from 2018-06-20 19-51-00.png">' --}}
         {{-- <div class="box-header with-border">
             <h3 class="box-title">Bordered Table</h3>
         </div> --}}
         <!-- /.box-header -->
         <div class="box-body">
-            <table class="table table-bordered" id="table-produk">
+            <table class="table table-bordered" id="table-meja">
             <thead>
                 <tr>
                     <th width="10%">No</th>
-                    <th>Gambar</th>
-                    <th>Kategori</th>
-                    <th>Produk</th>
-                    <th>Harga</th>
-                    <th>Status</th>
+                    <th>Meja</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -57,68 +52,52 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-var produkTable;
+var mejaTable;
 $(function() {
-    produkTable = $('#table-produk').DataTable({
+    mejaTable = $('#table-meja').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-                url:'{{ url("master/produk/loaddata") }}',
+                url:'{{ url("master/meja/loaddata") }}',
                 data: function (d) {
                     return $.extend( {}, d, {
-                        "nama_produk"   : $("#nama_produk").val(),
-                        "status"        : $("#status").val(),
+                        "no_meja": $("#no_meja").val(),
                     } );
                 }
         },
         columns: [
             {data: 'nomor', name: 'nomor'},
-            {
-                data: "gambar",
-                orderable: false,
-                render: function(data, type, row) {
-                    if(data!=null && data!=''){
-                        return "<img src="+data+" style='height:75px;width:75px;'/>";
-                    }else{
-                        return null;
-                    }
-                }
-            },
-            {data: 'kategori', name: 'kategori', orderable: false},
-            {data: 'nama', name: 'nama', orderable: false},
-            {data: 'harga', name: 'harga'},
-            {data: 'status', name: 'status'},
+            {data: 'no_meja', name: 'no_meja', orderable: false},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
         bFilter : false,
     });
 });
 
-$('#filter-produk-table').click(function(){
-    produkTable.ajax.reload();
+$('#filter-meja-table').click(function(){
+    mejaTable.ajax.reload();
 });
 
-$('#reset-filter-produk-table').click(function(event) {
-    $("#nama_produk").val(null);
-    $("#status").val('All');
-    produkTable.ajax.reload();
+$('#reset-filter-meja-table').click(function(event) {
+    $("#no_meja").val(null);
+    mejaTable.ajax.reload();
 });
 
 // $('#btn-submit').click(function(){
-//     var nama_produk = $('#nama_produk').val();
-//     console.log(nama_produk);
-//     produkTable.ajax.reload();
+//     var nama_meja = $('#nama_meja').val();
+//     console.log(nama_meja);
+//     mejaTable.ajax.reload();
 // });
 
 //$(".datepicker").datepicker({dateFormat: 'dd-mm-yy'});
-$('#table-produk').on('click','.hapus-produk',function(event){
+$('#table-meja').on('click','.hapus-meja',function(event){
     //event.preventDefault();
-    var id_produk = $(this).attr('val');
+    var id_meja = $(this).attr('val');
 
-    if(confirm("Anda yakin akan hapus produk ini?")){
+    if(confirm("Anda yakin akan hapus meja ini?")){
         //return true;
         
-        var url = "{{url('master/produk/delete')}}";
+        var url = "{{url('master/meja/delete')}}";
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -126,13 +105,13 @@ $('#table-produk').on('click','.hapus-produk',function(event){
             type: "POST",
             url: url,
             data:{
-                'id_produk': id_produk,
+                'id_meja': id_meja,
             },
             success: function (response) {
 
                 if(response == true){
-                    toastr.success('Data produk berhasil dihapus',"Success");
-                    produkTable.ajax.reload();
+                    toastr.success('Data meja berhasil dihapus',"Success");
+                    mejaTable.ajax.reload();
                 }
             },
             error: function (response) {
@@ -145,10 +124,10 @@ $('#table-produk').on('click','.hapus-produk',function(event){
     }
 });
 
-$('#table-produk').on('click','.edit-produk',function(event){
+$('#table-meja').on('click','.edit-meja',function(event){
     //event.preventDefault();
-    var id_produk = $(this).attr('val');
-    var url = '{{ url("master/produk/edit") }}';
+    var id_meja = $(this).attr('val');
+    var url = '{{ url("master/meja/edit") }}';
 
     $('#myModalDialog').html('');
 
@@ -156,7 +135,7 @@ $('#table-produk').on('click','.edit-produk',function(event){
             url: url,
             data:{
             'ajax':1,
-            'id_produk':id_produk,
+            'id_meja':id_meja,
             },
             cache: false,
             dataType: 'html',
@@ -179,7 +158,7 @@ $('#table-produk').on('click','.edit-produk',function(event){
 });
 
 $(document).on('click','.open-modal',function(){
-    var url = '{{ url("master/produk/create") }}';
+    var url = '{{ url("master/meja/create") }}';
     $('#myModalDialog').html('');
 
     $.ajax({
