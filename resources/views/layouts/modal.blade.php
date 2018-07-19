@@ -13,10 +13,10 @@
         </div> --}}
         @yield('sub-content')
 
-        {{-- <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="modal-btn-submit">Save changes</button>
-        </div> --}}
+        <div class="modal-footer" style="display:none">
+          <button type="button" id="close-popup" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          {{-- <button type="button" class="btn btn-primary" id="modal-btn-submit">Save changes</button> --}}
+        </div>
       </div>
       <!-- /.modal-content -->
     </div>

@@ -164,6 +164,28 @@ return [
             ],
         ],
         [
+            'text'    => 'Transaksi',
+            'icon'    => 'table',
+            // 'role'    => 'superadministrator',
+            'submenu' => [
+                [
+                    'text'        => 'Pesanan',
+                    'url'         => 'transaksi/pesanan',
+                    'permission'  => 'read-pesanan',
+                ],
+                [
+                    'text'        => 'Pembayaran',
+                    'url'         => 'transaksi/pembayaran',
+                    'permission'  => 'read-pembayaran',
+                ],
+                [
+                    'text'        => 'Laporan',
+                    'url'         => 'transaksi/laporan',
+                    'permission'  => 'read-laporan',
+                ]
+            ],
+        ],
+        [
             'text'    => 'User Management',
             'icon'    => 'user',
             'role'    => 'superadministrator',

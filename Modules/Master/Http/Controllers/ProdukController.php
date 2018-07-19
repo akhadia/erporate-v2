@@ -20,7 +20,7 @@ class ProdukController extends Controller
 {
     public function __construct(){
         $this->middleware('auth');
-        // $this->middleware('permission:read-produk|create-produk|update-produk|delete-produk');
+        $this->middleware('permission:read-produk|create-produk|update-produk|delete-produk');
     }
     /**
      * Display a listing of the resource.
@@ -259,6 +259,65 @@ class ProdukController extends Controller
             
     }
 
+    public function popupProduk(){
+        $nomer = \Request::input('nomer');
+        return view('master::Produk.popup-produk', compact('nomer'));  
+    }
+
+    public function loadDataPopup(){
+        $nama_produk = \Request::input('nama_produk');
+
+        $GLOBALS['nomor']=\Request::input('start',1)+1;
+
+        $dataList = Produk::where(function ($q) use ($nama_produk){
+                if(!empty($nama_produk)){
+                    $nama_produk = strtoupper($nama_produk );
+                    $q->where(DB::raw('upper(nama)'), 'LIKE', "%$nama_produk%");
+                }
+            })
+            ->where('status','Y')
+            ->get();
+
+        return Datatables::of($dataList)
+            ->addColumn('nomor',function($dataList){
+                return $GLOBALS['nomor']++;
+            })
+
+            ->addColumn('gambar',function($dataList){
+                if(!empty($dataList->image) && $dataList->image != null){
+                    return url("/images/{$dataList->image}");
+                }else{
+                  return null;
+                }
+            })
+
+            ->addColumn('status', function ($dataList) {
+                $content = '';
+                if($dataList->status == 'Y'){
+                     $content .= '<span class="label label-success">Ready</span>';
+                }else{
+                    $content .= '<span class="label label-warning">Unready</span>';
+                }
+                return $content;
+            })    
+          
+            ->addColumn('action', function ($dataList) {
+                $content = '';
+                $content = '<a href="#" class="btn btn-xs btn-primary select-produk-from-popup" data-id="'.$dataList->id.'"><i class="glyphicon glyphicon-ok"></i> Add</a>';
+
+                return $content;
+            })
+
+            ->rawColumns(['status','action'])
+            ->make(true);
+            
+    }
+
+    function getProduk(Request $request, $id){
+        $produk=Produk::where('id',$id)->first();
+        return response()->json($produk);
+    }
+
      //Fungsi untuk auto generate nomor gambar
      private function noUrutGambar(){
         $temp = Carbon::createFromFormat('Y-m-d', date("Y-m-d"));
@@ -292,5 +351,7 @@ class ProdukController extends Controller
   
         return $next_no_seri;
     }
+
+     
 
 }
