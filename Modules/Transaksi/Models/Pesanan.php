@@ -38,4 +38,8 @@ class Pesanan extends Model
     {
         return $this->belongsTo('Modules\Master\Models\Meja','id_meja');
     }
+
+    // public function pembayaran(){
+    //     return $this->hasOne('Modules\Transaksi\Models\Pembayaran');
+    // }
 }
