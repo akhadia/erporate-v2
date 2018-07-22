@@ -18,7 +18,7 @@
 <a href="{{ URL::to('permission/create') }}" class="btn btn-primary btn-lg" permission="button"><i class="fa fa-plus-circle"></i> Add New Permission</a>
 <div class="row">&nbsp;</div>
 
-@include('Permission.form-search')  
+{{-- @include('Permission.form-search')   --}}
 
 <div class="row">
     <div class="box">
@@ -61,14 +61,20 @@ $(function() {
                     } );
                 }
         },
+        columnDefs: [
+            {"className": "dt-center", "targets": '_all'},
+            // {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            // {"className": "dt-right", "targets": [5]}
+
+        ],
         columns: [
-            {data: 'nomor', name: 'nomor'},
+            {data: 'nomor', name: 'nomor', searchable: false},
             {data: 'name', name: 'name', orderable: false},
             {data: 'display_name', name: 'display_name', orderable: false},
             //{data: 'status', name: 'status', orderable: false, searchable: false},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        bFilter : false,
+        // bFilter : false,
     });
 });
 

@@ -28,7 +28,9 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        return view('master::Produk.index');
+        $kategori = Kategori::pluck('nama', 'id');
+        $kategori->prepend('All Kategori','All');
+        return view('master::Produk.index', compact('kategori'));    
     }
 
     /**
@@ -192,10 +194,11 @@ class ProdukController extends Controller
     public function loadData(){
         $nama_produk = \Request::input('nama_produk');
         $status = \Request::input('status');
-
+        $id_kategori = \Request::input('kategori');
+        
         $GLOBALS['nomor']=\Request::input('start',1)+1;
 
-        $dataList = Produk::where(function ($q) use ($nama_produk, $status){
+        $dataList = Produk::where(function ($q) use ($nama_produk, $status, $id_kategori){
                 if(!empty($nama_produk)){
                     $nama_produk = strtoupper($nama_produk );
                     $q->where(DB::raw('upper(nama)'), 'LIKE', "%$nama_produk%");
@@ -204,7 +207,9 @@ class ProdukController extends Controller
                     $status = strtoupper($status );
                     $q->where(DB::raw('upper(status)'), '=', $status);
                 } 
-
+                if(!empty($id_kategori) && $id_kategori!='All'){
+                    $q->where('id_kategori','=',$id_kategori);                
+                } 
             })
             ->orderby('id','desc')
             ->get();
@@ -241,7 +246,7 @@ class ProdukController extends Controller
             })   
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
+                $content = '<div class="btn-toolbar">';
                 // $content .= '<a href="'.url("produk/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target="modal"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
                 if (Laratrust::can('update-produk')) {
                     $content .= '<button id="btn-edit" class="btn btn-xs btn-info edit-produk" val="'.$dataList->id.'"><i class="glyphicon glyphicon-edit"></i> Edit</button>';
@@ -250,7 +255,8 @@ class ProdukController extends Controller
                     $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-produk" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
                 }
                 // $content .= '<a href="'.url("role/destroy/".$dataList->id).'" class="btn btn-xs btn-danger hapus-bahan" target=""><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-               
+                $content .= '</div">';
+
                 return $content;
             })
 

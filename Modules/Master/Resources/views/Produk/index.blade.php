@@ -68,9 +68,15 @@ $(function() {
                     return $.extend( {}, d, {
                         "nama_produk"   : $("#nama_produk").val(),
                         "status"        : $("#status").val(),
+                        "kategori"      : $("#kategori").val(),
                     } );
                 }
         },
+        columnDefs: [
+            {"className": "dt-center", "targets": '_all'},
+            // {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            // {"className": "dt-right", "targets": [5]}
+        ],
         columns: [
             {data: 'nomor', name: 'nomor'},
             {
@@ -101,6 +107,7 @@ $('#filter-produk-table').click(function(){
 $('#reset-filter-produk-table').click(function(event) {
     $("#nama_produk").val(null);
     $("#status").val('All');
+    $("#kategori").val('All');
     produkTable.ajax.reload();
 });
 

@@ -8,6 +8,15 @@
     table.dataTable.no-footer {
         border-bottom: 0;
     }
+    th.dt-center, td.dt-center { 
+        text-align: center;
+    }
+    td.dt-right { 
+        text-align: right;
+    }
+    td.dt-left { 
+        text-align: left;
+    }
 </style>
 @endpush
 

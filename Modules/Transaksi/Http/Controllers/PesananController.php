@@ -172,7 +172,8 @@ class PesananController extends Controller
             })    
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
+                $content = '<div class="btn-toolbar">';
+
                 if (Laratrust::can('update-pesanan') && $dataList->status == 'Y') {
                     $content .= '<a href="'.url("transaksi/pesanan/edit/".$dataList->id).'" class="btn btn-xs btn-primary" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
                 }
@@ -188,7 +189,7 @@ class PesananController extends Controller
                     $content .= '<button id="btn-selesai" class="btn btn-xs btn-success pesanan-selesai" val="'.$dataList->id.'"><i class="glyphicon glyphicon-ok"></i> Selesai</button>';
 
                 }
-
+                $content .= '</div>';
                 return $content;
             })
 

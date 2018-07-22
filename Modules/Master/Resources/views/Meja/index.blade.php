@@ -25,7 +25,7 @@
 
 <div class="row">&nbsp;</div>
 
-@include('master::Meja.form-search')  
+{{-- @include('master::Meja.form-search')   --}}
 
 <div class="row">
     <div class="box">
@@ -65,12 +65,18 @@ $(function() {
                     } );
                 }
         },
+        columnDefs: [
+            {"className": "dt-center", "targets": '_all'},
+            // {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            // {"className": "dt-right", "targets": [5]}
+
+        ],
         columns: [
-            {data: 'nomor', name: 'nomor'},
+            {data: 'nomor', name: 'nomor', searchable: false},
             {data: 'no_meja', name: 'no_meja', orderable: false},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        bFilter : false,
+        // bFilter : false,
     });
 });
 

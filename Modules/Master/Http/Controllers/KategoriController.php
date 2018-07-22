@@ -166,7 +166,7 @@ class KategoriController extends Controller
             })  
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
+                $content = '<div class="btn-toolbar">';
                 // $content .= '<a href="'.url("kategori/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target="modal"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
                 if (Laratrust::can('update-kategori')) {
                     $content .= '<button id="btn-edit" class="btn btn-xs btn-info edit-kategori" val="'.$dataList->id.'"><i class="glyphicon glyphicon-edit"></i> Edit</button>';
@@ -175,10 +175,8 @@ class KategoriController extends Controller
                     $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-kategori" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
                 }
                 
-                
-
                 // $content .= '<a href="'.url("role/destroy/".$dataList->id).'" class="btn btn-xs btn-danger hapus-bahan" target=""><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-
+                $content .= '</div>';
                
                 return $content;
             })

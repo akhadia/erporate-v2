@@ -36,13 +36,20 @@ class PembayaranController extends Controller
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create($id)
+
+    public function addEditPembayaran($id_pesanan)
     {
-        $pembayaran = new Pembayaran;
-        $pesanan = Pesanan::find($id);
-        $detailPesanan = DetailPesanan::where('id_pesanan',$id)->get();
-        
-        return view('transaksi::Pembayaran.form-add-pembayaran',compact('pembayaran','pesanan','detailPesanan'));    
+        $status = 'update';
+        $pesanan = Pesanan::find($id_pesanan);
+        $detailPesanan = DetailPesanan::where('id_pesanan',$id_pesanan)->get();
+        $pembayaran = Pembayaran::where('id_pesanan',$id_pesanan)->first();
+
+        if(!$pembayaran){
+            $pembayaran = new Pembayaran;
+            $status = 'create';
+        }
+    
+        return view('transaksi::Pembayaran.form-add-pembayaran',compact('pembayaran','pesanan','detailPesanan','status'));    
     }
 
     /**
@@ -50,29 +57,47 @@ class PembayaranController extends Controller
      * @param  Request $request
      * @return Response
      */
+
     public function store(Request $request)
     {
         $all_data = $request->all();
 
-        dd(    $all_data );
-    }
+        $tgl_pembayaran = date("Y-m-d H:i:s");
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show()
-    {
-        return view('transaksi::show');
-    }
+        $data_pembayaran= array(
+                                "id_pesanan" => $all_data['id_pesanan'],
+                                "tgl_bayar" => $tgl_pembayaran,
+                                "total_tagihan" =>  $all_data['total_tagihan'],
+                                "jumlah_bayar" => $all_data['jumlah_bayar'],
+                                "kembalian" => $all_data['kembalian'],
+                                "keterangan" => '',
+                            );
 
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
-    {
-        return view('transaksi::edit');
+        DB::beginTransaction();
+        try {
+            $pembayaran=Pembayaran::create($data_pembayaran);
+
+        }catch (Exception $e) {
+            DB::rollBack();
+
+            $response = array(
+                'status'    => 'Error',
+                'message'   => 'Pembayaran no pesanan '. $all_data['no_pesanan'].' gagal ditambahkan', 
+                'from'      => 'store', 
+            );
+            
+            return response()->json($response);
+        }
+        DB::commit();
+
+        $response = array(
+            'status'    => 'Success',
+            'message'   => 'Pembayaran no pesanan '. $all_data['no_pesanan'].' berhasil ditambahkan', 
+            'from'      => 'store',
+        );
+        
+        return response()->json($response);
+
     }
 
     /**
@@ -82,14 +107,40 @@ class PembayaranController extends Controller
      */
     public function update(Request $request)
     {
-    }
+        $all_data = $request->all();
 
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
-    {
+        $data_pembayaran= array(
+                                "jumlah_bayar" => $all_data['jumlah_bayar'],
+                                "kembalian" => $all_data['kembalian'],
+                                "keterangan" => '',
+                            );
+        
+        DB::beginTransaction();
+        try {
+            if(!empty($all_data['id_pembayaran']) && $all_data['id_pembayaran'] != null){
+                $update_pembayaran= Pembayaran::findOrFail($all_data['id_pembayaran']);
+                $update_pembayaran->update($data_pembayaran);
+            }
+        }catch (Exception $e) {
+            DB::rollBack();
+
+            $response = array(
+                'status'    => 'Error',
+                'message'   => 'Pembayaran no pesanan '. $all_data['no_pesanan'].' gagal diubah', 
+                'from'      => 'store', 
+            );
+            
+            return response()->json($response);
+        }
+        DB::commit();
+
+        $response = array(
+            'status'    => 'Success',
+            'message'   => 'Pembayaran no pesanan '. $all_data['no_pesanan'].' berhasil diubah', 
+            'from'      => 'store', 
+        );
+        
+        return response()->json($response);
     }
 
     public function loadData(){
@@ -118,16 +169,20 @@ class PembayaranController extends Controller
                     $date_to = Carbon::createFromFormat('d-m-Y', $date_to )->format('Y-m-d');
                     $q->where('pesanan.tgl_pesanan', '<=', $date_to." 23:59:59");
                 }
-            // if(!empty($status) && $status!='All'){
-            //     $status = strtoupper($status );
-            //     $q->where(DB::raw('upper(status)'), 'LIKE', "%$status%");
-            // } 
-            // if(auth()->user()->hasrole('pelayan')){
-            //     $q->where('user_input', $id_user);
-            // }
+                if(!empty($status) && $status!='All'){
+                    $status = strtoupper($status );
+                    if($status=='Y'){
+                        $q->whereNotNull('pb.id');
+                    }else{
+                        $q->whereNull('pb.id');
+                    }
+                } 
+                // if(auth()->user()->hasrole('pelayan')){
+                //     $q->where('pb.user_input', $id_user);
+                // }
             
             })
-        ->where('pesanan.status','N')
+        // ->where('pesanan.status','N')
         ->orderby('pesanan.id','desc')
         ->get();
 
@@ -165,22 +220,42 @@ class PembayaranController extends Controller
             })      
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
+                $content = '<div class="btn-toolbar">';
+
                 if(isset($dataList->id_pembayaran)){
-                // $content .= '<a href="'.url("pemesanan/viewdetailpemesanan/".$dataList->id).'" class="btn btn-xs btn-primary" target=""><i class="glyphicon glyphicon-edit"></i> Detail</a>';
+                    if (Laratrust::can('update-pembayaran')) {
+                        $content .= '<a href="'.url("transaksi/pembayaran/addeditpembayaran/".$dataList->id).'" class="btn btn-xs btn-primary" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+                    }
+                    $content .= '<button id="btn-cetak" val="'.$dataList->id.'" class="btn btn-xs btn-info btn-cetak" target=""><i class="glyphicon glyphicon-print"></i> Cetak</button>';
                 }else{
-                    $content .= '<a href="'.url("transaksi/pembayaran/create/".$dataList->id).'" class="btn btn-xs btn-success" target=""><i class="glyphicon glyphicon-edit"></i> Bayar</a>';
+                    if (Laratrust::can('create-pembayaran')) {
+                        $content .= '<a href="'.url("transaksi/pembayaran/addeditpembayaran/".$dataList->id).'" class="btn btn-xs btn-success" target=""><i class="glyphicon glyphicon-ok"></i> Bayar</a>';
+                    }
                 }
                 // $pembayaran = Pembayaran::where('id_pemesanan', $dataList->id)->first();
                 // $content .= '<a href="'.url("pembayaran/viewdetailpembayaran/".$dataList->id).'" class="btn btn-xs btn-primary" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
                 // if(!empty($pembayaran)){
                 //     $content .= '<a href="'.url("pemesanan/pemesananselesai/".$dataList->id).'" class="btn btn-xs btn-danger pemesanan-selesai" target=""><i class="glyphicon glyphicon-ok"></i> Tutup</a>';
                 // }
+                $content .= '</div>';
                 return $content;
             })
 
             ->rawColumns(['status','action'])
             ->make(true);
             
+    }
+
+
+    public function cetakNota(Request $request)
+    {
+        $id_pesanan = $request->id_pesanan;
+
+        $pesanan = Pesanan::find($id_pesanan);
+        $pembayaran = Pembayaran::where('id_pesanan',$id_pesanan)->first();
+        $detailPesanan = DetailPesanan::where('id_pesanan',$id_pesanan)->get();
+            
+        return view('transaksi::Pembayaran.cetak-nota-pembayaran',compact('pembayaran','pesanan','detailPesanan'));
+        
     }
 }

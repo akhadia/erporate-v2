@@ -166,7 +166,8 @@ class MejaController extends Controller
             })  
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
+                $content = '<div class="btn-toolbar">';
+
                 // $content .= '<a href="'.url("kategori/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target="modal"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
                 if (Laratrust::can('update-meja')) {
                     $content .= '<button id="btn-edit" class="btn btn-xs btn-info edit-meja" val="'.$dataList->id.'"><i class="glyphicon glyphicon-edit"></i> Edit</button>';
@@ -176,7 +177,7 @@ class MejaController extends Controller
                 }
                 
                 // $content .= '<a href="'.url("role/destroy/".$dataList->id).'" class="btn btn-xs btn-danger hapus-bahan" target=""><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-
+                $content .= '</div>';
                 return $content;
             })
 

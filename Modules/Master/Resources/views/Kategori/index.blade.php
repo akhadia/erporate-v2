@@ -25,7 +25,7 @@
 
 <div class="row">&nbsp;</div>
 
-@include('master::Kategori.form-search')  
+{{-- @include('master::Kategori.form-search')   --}}
 
 <div class="row">
     <div class="box">
@@ -65,12 +65,18 @@ $(function() {
                     } );
                 }
         },
+        columnDefs: [
+            {"className": "dt-center", "targets": '_all'},
+            // {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            // {"className": "dt-right", "targets": [5]}
+
+        ],
         columns: [
-            {data: 'nomor', name: 'nomor'},
+            {data: 'nomor', name: 'nomor', searchable: false},
             {data: 'nama', name: 'nama', orderable: false},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ],
-        bFilter : false,
+        // bFilter : false,
     });
 });
 

@@ -14,8 +14,12 @@ Route::group(['middleware' => 'web', 'prefix' => 'transaksi', 'namespace' => 'Mo
     //== Pembayaran ==//
     // Route::post('pesanan/pesananselesai','PembayaranController@pesananSelesai');
     Route::get('pembayaran/loaddata','PembayaranController@loadData');
-    Route::get('pembayaran/edit/{id}','PembayaranController@edit');
-    Route::get('pembayaran/create/{id}','PembayaranController@create');
+    Route::get('pembayaran/cetaknota','PembayaranController@cetakNota');
+    // Route::get('pembayaran/edit/{id}','PembayaranController@edit');
+    // Route::get('pembayaran/create/{id}','PembayaranController@create');
+    Route::get('pembayaran/addeditpembayaran/{id}','PembayaranController@addEditPembayaran');
+    Route::post('pembayaran/update','PembayaranController@update');
+    Route::post('pembayaran/store','PembayaranController@store');
     Route::post('pembayaran/delete','PembayaranController@delete');
     Route::resource('pembayaran','PembayaranController');
 });

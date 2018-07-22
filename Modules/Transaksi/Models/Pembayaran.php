@@ -34,6 +34,11 @@ class Pembayaran extends Model
             }
         });
     }
+
+    public function pesanan()
+    {
+        return $this->belongsTo('Modules\Transaksi\Models\Pesanan','id_pesanan');
+    }
     
 }
 

@@ -53,6 +53,22 @@
 </div>
 @stop
 
+{{-- @push('css')
+<style type="text/css"> 
+    th.dt-center, td.dt-center { 
+        text-align: center;
+    }
+
+    td.dt-right { 
+        text-align: right;
+    }
+
+    td.dt-left { 
+        text-align: left;
+    }
+</style>
+@endpush --}}
+
 @push('js')
 <script type="text/javascript">
 $(document).ready(function() {
@@ -73,6 +89,12 @@ $(function() {
                     } );
                 }
         },
+        columnDefs: [
+            {"className": "dt-center", "targets": '_all'},
+            // {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            // {"className": "dt-right", "targets": [5]}
+
+        ],
         columns: [
             {data: 'nomor', name: 'nomor'},
             {data: 'no_pesanan', name: 'no_pesanan', orderable: false},
@@ -145,37 +167,35 @@ $('#table-pembayaran').on('click','.hapus-pembayaran',function(event){
     }
 });
 
-$('#table-pembayaran').on('click','.pembayaran-selesai',function(event){
+$('#table-pembayaran').on('click','.btn-cetak',function(event){
     //event.preventDefault();
-    var id_pembayaran = $(this).attr('val');
+    var id_pesanan = $(this).attr('val');
 
-    if(confirm("Anda yakin akan menutup pembayaran ini?")){
-        //return true;
-        
-        var url = "{{url('transaksi/pembayaran/pembayaranselesai')}}";
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            type: "POST",
-            url: url,
-            data:{
-                'id_pembayaran': id_pembayaran,
-            },
-            success: function (response) {
+    var mapForm = document.createElement("form");
+    mapForm.target = "Map";
+    mapForm.method = "get"; // or "post" if appropriate
+    mapForm.action = "{{url('transaksi/pembayaran/cetaknota')}}";
 
-                if(response == true){
-                    toastr.success('Pembayaran telah selesai',"Success");
-                    pembayaranTable.ajax.reload();
-                }
-            },
-            error: function (response) {
-                //console.log('Error:', data);
-            }
-        });
-         
-    }else{
-        return false;
+    var mapInput = document.createElement("input");
+    mapInput.type = "hidden";
+    mapInput.name = "id_pesanan";
+    mapInput.value = id_pesanan;
+    mapForm.appendChild(mapInput);
+
+    // var mapInput2 = document.createElement("input");
+    // mapInput2.type = "hidden";
+    // mapInput2.name = "id_pesanan";
+    // mapInput2.value = id_pesanan;
+    // mapForm.appendChild(mapInput2);
+
+    document.body.appendChild(mapForm);
+
+    map = window.open("", "Map", "status=0,title=0,height=600,width=500,scrollbars=1");
+
+    if (map) {
+        mapForm.submit();
+    } else {
+        //alert('You must allow popups for this map to work.');
     }
 });
 
@@ -236,8 +256,6 @@ $(document).on('click','.open-modal',function(){
 
     return true;
 });
-
-
 
 </script>
 @endpush

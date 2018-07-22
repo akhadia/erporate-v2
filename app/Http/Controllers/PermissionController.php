@@ -191,13 +191,16 @@ class PermissionController extends Controller
             })  
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
-                $content .= '<a href="'.url("permission/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-            
+                $content = '<div class="btn-toolbar">';
+                if (\Laratrust::can('update-acl')) {
+                    $content .= '<a href="'.url("permission/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+                }
+                if (\Laratrust::can('delete-acl')) {
+                    $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-permission" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
+                }
                 // $content .= '<a href="'.url("role/destroy/".$dataList->id).'" class="btn btn-xs btn-danger hapus-bahan" target=""><i class="glyphicon glyphicon-trash"></i> Delete</a>';
-                $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-permission" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
 
-               
+                $content .= '</div>';
                 return $content;
             })
 

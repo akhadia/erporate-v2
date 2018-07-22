@@ -20,8 +20,8 @@
         {{-- <label for="sel1">Status</label> --}}
         <select class="form-control" id="status" name="status">
             <option value="All">All Status</option>
-            <option value="Y">Belum Bayar</option>
-            <option value="N">Sudah Bayar</option>
+            <option value="N">Belum Bayar</option>
+            <option value="Y">Sudah Bayar</option>
         </select>
     </div>
 </div>
