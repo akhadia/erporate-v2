@@ -15,7 +15,10 @@
 @section('content')
 
 {{-- @include('flash::message') --}}
-<a href="{{ URL::to('role/create') }}" class="btn btn-primary btn-lg" role="button"><i class="fa fa-plus-circle"></i> Add New Role</a>
+@permission('create-acl')
+    <a href="{{ URL::to('role/create') }}" class="btn btn-primary btn-lg" role="button"><i class="fa fa-plus-circle"></i> Add New Role</a>
+@endpermission
+
 <div class="row">&nbsp;</div>
 
 {{-- @include('Role.form-search')   --}}

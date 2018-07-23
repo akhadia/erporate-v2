@@ -192,13 +192,23 @@ class UserController extends Controller
 
     public function loadData(){
         $nama_user = \Request::input('nama_user');
+        $username = \Request::input('username');
+        $email = \Request::input('email');
 
         $GLOBALS['nomor']=\Request::input('start',1)+1;
 
-        $dataList = User::where(function ($q) use ($nama_user){
+        $dataList = User::where(function ($q) use ($nama_user, $username, $email){
                 if(!empty($nama_user)){
                     $nama_user = strtoupper($nama_user );
                     $q->where(DB::raw('upper(name)'), 'LIKE', "%$nama_user%");
+                } 
+                if(!empty($username)){
+                    $username = strtoupper($username );
+                    $q->where(DB::raw('upper(username)'), '=', $username );
+                } 
+                if(!empty($email)){
+                    $email = strtoupper($email );
+                    $q->where(DB::raw('upper(email)'), '=', $email);
                 } 
             })
             ->orderby('id','desc')
@@ -210,11 +220,15 @@ class UserController extends Controller
             })  
           
             ->addColumn('action', function ($dataList) {
-                $content = '';
-                $content .= '<a href="'.url("user/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-            
-                $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-user" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
+                $content = '<div class="btn-toolbar">';
+                if (\Laratrust::can('update-acl')) {
+                    $content .= '<a href="'.url("user/".$dataList->id."/edit").'" class="btn btn-xs btn-info" target=""><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+                }
+                if (\Laratrust::can('delete-acl')) {
+                    $content .= '<button id="btn_delete" class="btn btn-xs btn-danger hapus-user" val="'.$dataList->id.'"><i class="glyphicon glyphicon-trash"></i> Delete</button>';
+                }
 
+                $content .= '</div>';
                
                 return $content;
             })

@@ -15,7 +15,10 @@
 @section('content')
 
 {{-- @include('flash::message') --}}
-<a href="{{ URL::to('permission/create') }}" class="btn btn-primary btn-lg" permission="button"><i class="fa fa-plus-circle"></i> Add New Permission</a>
+@permission('create-acl')
+    <a href="{{ URL::to('permission/create') }}" class="btn btn-primary btn-lg" permission="button"><i class="fa fa-plus-circle"></i> Add New Permission</a>
+@endpermission
+
 <div class="row">&nbsp;</div>
 
 {{-- @include('Permission.form-search')   --}}

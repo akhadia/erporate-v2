@@ -5,6 +5,20 @@
     </div> 
 </div>
 
+<div class="row">
+    <div class="form-group col-md-3">
+         {{-- <input class="form-control" id="no_pemesanan" name="no_pemesanan" placeholder="Enter text.."> --}}
+         {{ Form::text('username', '', array('id' => 'username', 'class' => 'form-control', 'placeholder' => 'Username...')) }}
+     </div> 
+ </div>
+
+ <div class="row">
+    <div class="form-group col-md-3">
+         {{-- <input class="form-control" id="no_pemesanan" name="no_pemesanan" placeholder="Enter text.."> --}}
+         {{ Form::text('email', '', array('id' => 'email', 'class' => 'form-control', 'placeholder' => 'Email...')) }}
+     </div> 
+ </div>
+
 <div class="row" style="display:none">
     <div class="form-group col-md-3">
         {{-- <label for="sel1">Status</label> --}}

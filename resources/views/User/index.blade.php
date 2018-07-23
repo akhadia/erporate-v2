@@ -15,7 +15,11 @@
 @section('content')
 
 @include('flash::message')
-<a href="{{ URL::to('user/create') }}" class="btn btn-primary btn-lg" user="button"><i class="fa fa-plus-circle"></i> Add New User</a>
+
+@permission('create-acl')
+    <a href="{{ URL::to('user/create') }}" class="btn btn-primary btn-lg" user="button"><i class="fa fa-plus-circle"></i> Add New User</a>
+@endpermission
+
 <div class="row">&nbsp;</div>
 
 @include('User.form-search')  
@@ -57,10 +61,17 @@ $(function() {
                 data: function (d) {
                     return $.extend( {}, d, {
                         "nama_user": $("#nama_user").val(),
-                        // "status": $("#status").val(),
+                        "username" : $("#username").val(),
+                        "email"    : $("#email").val(),
                     } );
                 }
         },
+        columnDefs: [
+            {"className": "dt-center", "targets": '_all'},
+            // {"className": "dt-center", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            // {"className": "dt-right", "targets": [5]}
+
+        ],
         columns: [
             {data: 'nomor', name: 'nomor'},
             {data: 'username', name: 'username', orderable: false},
@@ -79,6 +90,8 @@ $('#filter-user-table').click(function(){
 
  $('#reset-filter-user-table').click(function(event) {
     $("#nama_user").val(null);
+    $("#username").val(null),
+    $("#email").val(null),
     // $("#status").val('all');
     userTable.ajax.reload();
 });
