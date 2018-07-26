@@ -44,7 +44,7 @@ function add_pembayaran(){
 		success: function (response) {
 
 			if(response.status == 'Success'){
-				$("#btn_cetak").show();
+				$("#btnCetak").show();
 
 				toastr.success(response.message, response.status);
 			}else{
@@ -100,7 +100,7 @@ $('#jumlah_bayar').on('keyup blur',function(){
 		
 });
 
-$("#btn-cetak").on("click", function () {
+$("#btnCetak").on("click", function () {
 	// console.log('oke');
 	var id_pesanan = $('#id_pesanan').val();
 

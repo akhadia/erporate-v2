@@ -147,19 +147,23 @@ return [
         [
             'text'    => 'Master',
             'icon'    => 'table',
-            'role'    => 'superadministrator',
+            'role'    => 'superadministrator|pelayan',
             'submenu' => [
                 [
                     'text'        => 'Kategori',
                     'url'         => 'master/kategori',
+                    'permission'  => 'read-kategori',
                 ],
                 [
                     'text'        => 'Produk',
                     'url'         => 'master/produk',
+                    'permission'  => 'read-produk',
+
                 ],
                 [
                     'text'        => 'Meja',
                     'url'         => 'master/meja',
+                    'permission'  => 'read-meja',
                 ]
             ],
         ],

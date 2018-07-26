@@ -20,6 +20,8 @@ Route::group(['middleware' => 'web', 'prefix' => 'master', 'namespace' => 'Modul
     Route::get('produk/getproduk/{id}','ProdukController@getProduk');
     Route::get('produk/loaddatapopup','ProdukController@loadDataPopup');
     Route::get('produk/popupproduk','ProdukController@popupProduk');
+    // Route::get('produk/loaddatapopup',['middleware' => ['role:pelayan'], 'uses' => 'ProdukController@loadDataPopup']);
+    // Route::get('produk/popupproduk',['middleware' => ['role:pelayan'], 'uses' => 'ProdukController@popupProduk']);
     Route::resource('produk','ProdukController');
 
     //== Meja ==//

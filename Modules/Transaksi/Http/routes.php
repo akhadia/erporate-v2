@@ -22,4 +22,8 @@ Route::group(['middleware' => 'web', 'prefix' => 'transaksi', 'namespace' => 'Mo
     Route::post('pembayaran/store','PembayaranController@store');
     Route::post('pembayaran/delete','PembayaranController@delete');
     Route::resource('pembayaran','PembayaranController');
+
+    //== Laporan ==//
+    Route::get('laporan/createlaporanpesanan','LaporanController@createLaporanPesanan');
+    Route::resource('laporan','LaporanController');
 });

@@ -159,7 +159,7 @@
     <div class="box-footer">
         <div class="btn-toolbar col-md-12">
             <button class="btn btn-medium btn-primary pull-right submit_button" id="simpan_pembayaran" status-form="simpan"><i class="glyphicon glyphicon-ok"></i> Submit</button>
-            <button style="{{$display_none}}" class="btn btn-medium btn-info pull-right btn-cetak" id="btn-cetak" ><i class="glyphicon glyphicon-print"></i> Cetak</button>
+            <button style="{{$display_none}}" class="btn btn-medium btn-info pull-right btn-cetak" id="btnCetak" ><i class="glyphicon glyphicon-print"></i> Cetak</button>
         </div>
     </div>
     <!-- /.box-footer -->

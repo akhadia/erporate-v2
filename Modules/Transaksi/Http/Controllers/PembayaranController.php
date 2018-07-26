@@ -20,7 +20,7 @@ class PembayaranController extends Controller
 {
     public function __construct(){
         $this->middleware('auth');
-        // $this->middleware('permission:read-pembayaran|create-pembayaran|update-pembayaran|delete-pembayaran');
+        $this->middleware('permission:read-pembayaran|create-pembayaran|update-pembayaran|delete-pembayaran');
     }
 
     /**

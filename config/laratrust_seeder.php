@@ -10,14 +10,18 @@ return [
             'meja' => 'c,r,u,d',
             'pesanan' => 'c,r,u,d',
             'pembayaran' => 'c,r,u,d',
+            'laporan' => 'c,r,u,d',
 
         ],
         'kasir' => [
             'pesanan' => 'r,u',
-            'pembayaran' => 'r,u',
+            'pembayaran' => 'c,r,u',
+            
         ],
         'pelayan' => [
+            'produk'  => 'r',
             'pesanan' => 'c,r,u,d',
+            'laporan' => 'c,r,u,d',
         ],
         // 'administrator' => [
         //     'users' => 'c,r,u,d',
