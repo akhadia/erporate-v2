@@ -32,6 +32,15 @@ class PesananController extends Controller
         return view('transaksi::Pesanan.index');
     }
 
+    public function index2($status)
+    {
+        // $date_now = Carbon::now()->format('Y-m-d');
+        $date_from = Carbon::now()->format('d-m-Y');
+        $date_to = Carbon::now()->format('d-m-Y');
+
+        return view('transaksi::Pesanan.index', compact('date_from', 'date_to', 'status'));
+    }
+
     public function create(){
         $pesanan = new Pesanan;
         $meja = Meja::pluck('no_meja', 'id');

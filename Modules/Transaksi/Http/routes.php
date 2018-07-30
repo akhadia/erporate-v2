@@ -11,6 +11,7 @@ Route::group(['middleware' => 'web', 'prefix' => 'transaksi', 'namespace' => 'Mo
     Route::get('pesanan/loaddata','PesananController@loadData');
     Route::get('pesanan/edit/{id}','PesananController@edit');
     Route::post('pesanan/delete','PesananController@delete');
+    Route::get('pesanan/index2/{status}','PesananController@index2');
     Route::resource('pesanan','PesananController');
 
     //== Pembayaran ==//
