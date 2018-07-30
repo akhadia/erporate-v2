@@ -5,6 +5,7 @@ namespace Modules\Transaksi\Http\Controllers;
 use Modules\Master\Models\Meja;
 use Modules\Transaksi\Models\Pesanan;
 use Modules\Transaksi\Models\DetailPesanan;
+use Modules\Transaksi\Models\Pembayaran;
 
 use Carbon\Carbon;
 use Laratrust;
@@ -186,7 +187,10 @@ class PesananController extends Controller
                     // if (Laratrust::can('update-produk')) {
                     //     $content .= '<button id="btn-edit" class="btn btn-xs btn-info edit-produk" val="'.$dataList->id.'"><i class="glyphicon glyphicon-edit"></i> Edit</button>';
                     // }
-                    $content .= '<button id="btn-selesai" class="btn btn-xs btn-success pesanan-selesai" val="'.$dataList->id.'"><i class="glyphicon glyphicon-ok"></i> Selesai</button>';
+                    $pembayaran = Pembayaran::where('id_pesanan',$dataList->id)->first();
+                    if(isset($pembayaran['id'])){
+                        $content .= '<button id="btn-selesai" class="btn btn-xs btn-success pesanan-selesai" val="'.$dataList->id.'"><i class="glyphicon glyphicon-ok"></i> Selesai</button>';
+                    }
 
                 }
                 $content .= '</div>';
@@ -195,6 +199,62 @@ class PesananController extends Controller
 
             ->rawColumns(['status','action'])
             ->make(true);
+    }
+
+    public function loadDataBulanan(){
+
+        $first_date = Carbon::now()->startOfMonth()->format('Y-m-d H:i:s');
+        $last_date = Carbon::now()->lastOfMonth()->format('Y-m-d H:i:s');
+        $num_date =  Carbon::now()->lastOfMonth()->day;
+        $month = Carbon::now()->format('F');
+
+        $selected_field = 'DATE( created_at ) as date, COUNT( * ) as "count"';
+        $pesanan = Pesanan::select(\DB::raw($selected_field))
+                    ->where( 'created_at', '>=', $first_date)
+                    ->where( 'created_at', '<=', $last_date)
+                    ->groupBy( 'date' )
+                    ->orderBy( 'date' )
+                    ->get();
+                    // ->pluck( 'count', 'date' );
+
+        $data['month'] = $month;
+        foreach($pesanan as $val){
+            $data['pesanan'][] = ['date'=>$val->date, 'order'=>$val->count];
+        }
+        // print_r($data);die;
+        return response()->json($data);
+
+    }
+
+    public function getTodayPesanan(){
+        $date_now = Carbon::now()->format('Y-m-d');
+
+        $selected_field = 'COUNT( * ) as "count"';
+        $pesanan_baru = Pesanan::select(\DB::raw($selected_field))
+                    ->where( 'created_at', '>=', $date_now." 00:00:00")
+                    ->where( 'created_at', '<=', $date_now." 23:59:59")
+                    ->where( 'status','Y')
+                    // ->groupBy( 'date' )
+                    // ->orderBy( 'date' )
+                    ->first();
+                    // ->pluck( 'count', 'date' );
+
+                    // dd($date_now);
+
+        $selected_field2 = 'COUNT( * ) as "count"';
+        $pesanan_selesai = Pesanan::select(\DB::raw($selected_field2))
+                    ->where( 'created_at', '>=', $date_now." 00:00:00")
+                    ->where( 'created_at', '<=', $date_now." 23:59:59")
+                    ->where( 'status','N')
+                    ->first();
+
+        $data = array(
+            'jmlBaru'=>$pesanan_baru['count'],
+            'jmlSelesai'=>$pesanan_selesai['count'],
+        );
+
+        return response()->json($data);
+
     }
 
     //Fungsi insert data ke tabel detail_pesanan

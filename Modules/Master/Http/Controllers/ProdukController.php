@@ -19,8 +19,8 @@ use File;
 class ProdukController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth');
-        $this->middleware('role:superadministrator|pelayan,permission:read-produk|create-produk|update-produk|delete-produk');
+        // $this->middleware('auth');
+        // $this->middleware('permission:read-produk|create-produk|update-produk|delete-produk');
     }
     /**
      * Display a listing of the resource.

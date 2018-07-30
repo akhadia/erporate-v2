@@ -5,7 +5,9 @@ Route::group(['middleware' => 'web', 'prefix' => 'transaksi', 'namespace' => 'Mo
     Route::get('/', 'TransaksiController@index');
 
     //== Pesanan ==//
+    Route::get('pesanan/gettodaypesanan','PesananController@getTodayPesanan');
     Route::post('pesanan/pesananselesai','PesananController@pesananSelesai');
+    Route::get('pesanan/loaddatabulanan','PesananController@loadDataBulanan');
     Route::get('pesanan/loaddata','PesananController@loadData');
     Route::get('pesanan/edit/{id}','PesananController@edit');
     Route::post('pesanan/delete','PesananController@delete');

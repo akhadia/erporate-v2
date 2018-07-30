@@ -19,7 +19,7 @@ return [
             
         ],
         'pelayan' => [
-            'produk'  => 'r',
+            'produk' => 'c,r,u,d',
             'pesanan' => 'c,r,u,d',
             'laporan' => 'c,r,u,d',
         ],
